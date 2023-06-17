@@ -17,66 +17,56 @@ D....D.
 
 게임판의 상태를 나타내는 문자열 배열 board가 주어졌을 때, 말이 목표위치에 도달하는데 최소 몇 번 이동해야 하는지 return 하는 solution함수를 완성하세요. 만약 목표위치에 도달할 수 없다면 -1을 return 해주세요.
 */
-function canMove(x, y, dx, dy, board) {
-  const nx = x + dx;
-  const ny = y + dy;
-
-  return (
-    0 <= nx &&
-    nx < board.length &&
-    0 <= ny &&
-    ny < board[0].length &&
-    board[nx][ny] !== "D"
-  );
-}
-
 function solution(board) {
-  const N = board.length;
-  const M = board[0].length;
-  let start;
+  let min = Number.MAX_SAFE_INTEGER;
 
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < M; j++) {
-      if (board[i][j] === "R") start = [i, j];
-    }
-  }
+  const dx = [1, -1, 0, 0];
+  const dy = [0, 0, 1, -1];
 
-  const directions = [
-    [-1, 0],
-    [1, 0],
-    [0, -1],
-    [0, 1],
-  ];
+  const checkInBoard = (x, y) => {
+    return 0 <= x && x < board.length && 0 <= y && y < board[0].length;
+  };
 
-  const visited = Array.from({ length: N }, () => new Array(M).fill(false));
-  visited[start[0]][start[1]] = true;
+  const recochat = (startPosition) => {
+    let min = Number.MAX_SAFE_INTEGER;
+    const visited = Array.from(board).map((row) => row.split("").map(() => 0));
 
-  const queue = [[start[0], start[1], 0]];
-  let answer = -1;
+    const queue = [[...startPosition, 0]];
+    while (queue.length) {
+      const [x, y, count] = queue.shift();
+      visited[x][y] = 1;
 
-  while (queue.length) {
-    const [x, y, move] = queue.shift();
-
-    if (board[x][y] === "G") {
-      answer = move;
-      break;
-    }
-
-    for (const [dx, dy] of directions) {
-      let nx = x;
-      let ny = y;
-
-      while (canMove(nx, ny, dx, dy, board)) {
-        nx += dx;
-        ny += dy;
-      }
-
-      if (!visited[nx][ny]) {
-        queue.push([nx, ny, move + 1]);
-        visited[nx][ny] = true;
+      for (let i = 0; i < 4; i++) {
+        let nx = x + dx[i];
+        let ny = y + dy[i];
+        while (checkInBoard(nx, ny) && board[nx][ny] !== "D") {
+          nx += dx[i];
+          ny += dy[i];
+        }
+        nx -= dx[i];
+        ny -= dy[i];
+        if (!visited[nx][ny]) {
+          visited[nx][ny] = 1;
+          if (board[nx][ny] === "G") {
+            min = Math.min(min, count + 1);
+          }
+          queue.push([nx, ny, count + 1]);
+        }
       }
     }
-  }
 
-  return answer;
+    return min !== Number.MAX_SAFE_INTEGER ? min : -1;
+  };
+
+  const startPoint = [0, 0];
+  board.forEach((row, x) => {
+    row.split("").map((el, y) => {
+      if (el === "R") {
+        startPoint[0] = x;
+        startPoint[1] = y;
+      }
+    });
+  });
+
+  return recochat(startPoint);
 }
