@@ -7,16 +7,17 @@ const solution = (step) => {
     if (n === 1) return console.log(step, start, sub, end);
     //1번에서 3번으로 옮기는 것을 최우선으로 삼는다.
     if (n === 2) {
-      end.push(start.pop());
+      console.log(one, two, three);
+      sub.push(start.pop());
       move(n - 1, start, sub, end);
     } else {
       //3이면,
-      sub.push(start.pop());
       console.log(one, two, three);
-      move(n - 1, sub, end, start);
+      sub.push(start.pop());
+      move(n - 1, sub, start, end);
     }
   };
   move(step, one, two, three);
 };
 
-solution(4);
+solution(3);
