@@ -15,6 +15,7 @@ const dx = [1, -1, 0, 0];
 const dy = [0, 0, 1, -1];
 const target = 2;
 
+/** 목표지점의 위치를 찾는 함수 */
 const getTargetIndex = () => {
   const targetIndex = [0, 0];
   map.forEach((row, x) => {
@@ -29,6 +30,7 @@ const getTargetIndex = () => {
   return targetIndex;
 };
 
+/** 해당 좌표가 지도를 벗어나지 않았는지 확인하는 함수 */
 const isInMap = (x, y) => {
   return 0 <= x && x < n && 0 <= y && y < m;
 };
@@ -37,6 +39,7 @@ const solution = () => {
   const newMap = [
     ...map.map((row, x) => row.map((_, y) => (map[x][y] ? -1 : 0))),
   ];
+
   const visited = Array.from({ length: n }, () => new Array(m).fill(false));
   const targetIndex = getTargetIndex();
   const queue = [[...targetIndex, 0]];

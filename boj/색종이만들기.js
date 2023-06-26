@@ -6,46 +6,47 @@ const input = fs
   .split("\n");
 
 const n = Number(input.shift());
-const paper = Array.from({ length: n }, () => []);
+const originalPaper = Array.from({ length: n }, () => []);
 for (let i = 0; i < n; i++) {
-  paper[i].push(...input.shift().split(" ").map(Number));
+  originalPaper[i].push(...input.shift().split(" ").map(Number));
 }
-
-// 같은 색으로 칠해져있지 않다면 가로와 세로 중간부분 자른다
 
 const solution = () => {
   let bluePaper = 0;
   let whitePaper = 0;
 
-  const getDivision = (array) => {
+  /**같은 색으로 칠해져있지 않다면 가로와 세로 중간부분 자르는 내부함수*/
+  const divideArray = (array) => {
     const newArray = Array.from({ length: 4 }, () => []);
-    const length = array.length;
-    for (let i = 0; i < length / 2; i++) {
-      newArray[0].push(array[i].filter((_, idx) => idx < length / 2));
-      newArray[1].push(array[i].filter((_, idx) => idx >= length / 2));
-      newArray[2].push(
-        array[length / 2 + i].filter((_, idx) => idx < length / 2)
-      );
-      newArray[3].push(
-        array[length / 2 + i].filter((_, idx) => idx >= length / 2)
-      );
+    const middle = array.length / 2;
+    for (let i = 0; i < middle; i++) {
+      newArray[0].push(array[i].filter((_, idx) => idx < middle));
+      newArray[1].push(array[i].filter((_, idx) => idx >= middle));
+      newArray[2].push(array[middle + i].filter((_, idx) => idx < middle));
+      newArray[3].push(array[middle + i].filter((_, idx) => idx >= middle));
     }
     return newArray;
   };
 
-  const division = (paper) => {
-    if (
+  /**같은 색으로만 이루어져있는 지 확인하는 내부함수*/
+  const isAbleToDivide = (paper) => {
+    return (
       paper.every((row) => row.every((el) => el === 1)) ||
       paper.every((row) => row.every((el) => el === 0))
-    ) {
-      paper[0][0] ? bluePaper++ : whitePaper++;
-    } else {
-      const dividedPapers = getDivision(paper);
+    );
+  };
+
+  /**종이를 제일 작은 단위까지 나누는 재귀함수*/
+  const division = (paper) => {
+    if (isAbleToDivide(paper)) {
+      const dividedPapers = divideArray(paper);
       dividedPapers.forEach((dividedPaper) => division(dividedPaper));
+    } else {
+      paper[0][0] ? bluePaper++ : whitePaper++;
     }
   };
 
-  division(paper);
+  division(originalPaper);
   return [whitePaper, bluePaper];
 };
 
