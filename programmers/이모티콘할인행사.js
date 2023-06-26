@@ -33,7 +33,6 @@ function solution(users, emoticons) {
       } else if (plusServiceUsers === answer[0]) {
         answer[1] = Math.max(sell, answer[1]);
       }
-
       return 0;
     }
 

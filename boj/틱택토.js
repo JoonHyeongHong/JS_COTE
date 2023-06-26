@@ -49,7 +49,7 @@ const checkValid = (game) => {
   if (oWin && countX > countO) return "invalid";
   if (xWin > 1 && countX !== 5) return "invalid";
   if (oWin > 1) return "invalid";
-  if (!xWin && !oWin && xCount + oCount !== 9) return "invalid";
+  if (!xWin && !oWin && countX + countO !== 9) return "invalid";
   return "valid";
 };
 

@@ -7,7 +7,6 @@ function solution(k, tangerine) {
   tangerine.sort((a, b) => b - a);
   tangerine.sort((a, b) => obj[b] - obj[a]);
   const length = tangerine.length;
-  console.log(tangerine);
 
   for (let i = 0; i < length - k; i++) {
     tangerine.pop();
