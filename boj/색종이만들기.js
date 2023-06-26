@@ -29,7 +29,7 @@ const solution = () => {
   };
 
   /**같은 색으로만 이루어져있는 지 확인하는 내부함수*/
-  const isAbleToDivide = (paper) => {
+  const isRectangle = (paper) => {
     return (
       paper.every((row) => row.every((el) => el === 1)) ||
       paper.every((row) => row.every((el) => el === 0))
@@ -38,7 +38,7 @@ const solution = () => {
 
   /**종이를 제일 작은 단위까지 나누는 재귀함수*/
   const division = (paper) => {
-    if (isAbleToDivide(paper)) {
+    if (!isRectangle(paper)) {
       const dividedPapers = divideArray(paper);
       dividedPapers.forEach((dividedPaper) => division(dividedPaper));
     } else {
