@@ -10,9 +10,9 @@ const map = Array.from({ length: n }, () => []);
 for (let i = 0; i < n; i++) {
   map[i].push(...input[i].split(" ").map(Number));
 }
+
 const dx = [1, -1, 0, 0];
 const dy = [0, 0, 1, -1];
-
 const target = 2;
 
 const getTargetIndex = () => {
