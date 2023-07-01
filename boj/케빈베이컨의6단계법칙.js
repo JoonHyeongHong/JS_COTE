@@ -19,8 +19,6 @@ for (let i = 1; i <= M; i++) {
   graph[end].push(start);
 }
 
-console.log(graph);
-
 const bfs = () => {
   const answer = [];
 
@@ -35,10 +33,10 @@ const bfs = () => {
         visited[currentIndex] = diff;
       }
     }
-
     answer.push(visited.reduce((acc, cur) => (acc += cur), 0) - 1);
   }
 
+  // 최소값
   return answer.indexOf(Math.min(...answer)) + 1;
 };
 
