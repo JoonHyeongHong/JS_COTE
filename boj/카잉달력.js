@@ -11,14 +11,15 @@ const getGcd = (a, b) => (a % b === 0 ? b : getGcd(b, a % b));
 const getLcm = (a, b) => (a * b) / getGcd(a, b);
 
 const solution = () => {
-  const [M, N, x, y] = input.pop().split(" ").map(Number);
-  let x1 = x;
-  let y1 = y;
+  const [M, N, X, Y] = input.pop().split(" ").map(Number);
+  let x = X;
+  let y = Y;
+
   const lcm = getLcm(M, N);
-  while (x1 <= lcm && y1 <= lcm) {
-    if (x1 > y1) y1 += N;
-    else if (x1 < y1) x1 += M;
-    else if (x1 === y1) return x1;
+  while (x <= lcm && y <= lcm) {
+    if (x > y) y += N;
+    else if (x < y) x += M;
+    else if (x === y) return x;
   }
   return -1;
 };
