@@ -39,7 +39,6 @@ const bfs = () => {
       }
     }
   }
-  console.log(visited);
   console.log(visited[100]);
 };
 
