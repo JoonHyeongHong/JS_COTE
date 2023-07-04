@@ -22,12 +22,8 @@ const commands = {
   },
 };
 
-const [T, ...registers] = input;
 const bfs = (register) => {
-  const [A, B] = register
-    .split(" ")
-    .map((el) => el.padStart(4, 0))
-    .map(Number);
+  const [A, B] = register.split(" ").map(Number);
 
   if (A === B) return "";
   const visited = new Array(10000).fill(0);
@@ -47,4 +43,6 @@ const bfs = (register) => {
     }
   }
 };
+
+const [T, ...registers] = input;
 registers.forEach(bfs);

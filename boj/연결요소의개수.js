@@ -34,4 +34,6 @@ for (let i = 1; i <= N; i++) {
   }
 }
 
+visited;
+count;
 console.log(count);
