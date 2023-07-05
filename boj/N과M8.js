@@ -18,8 +18,6 @@ const choose = (nums, M, array) => {
   }
 };
 
-for (let i = 0; i < nums.length; i++) {
-  choose(nums, M, []);
-}
+choose(nums, M, []);
 
 console.log([...answer].join("\n"));
