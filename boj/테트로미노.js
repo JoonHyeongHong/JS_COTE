@@ -12,8 +12,8 @@ const isInMap = (x, y) => {
   return 0 <= x && x < N && 0 <= y && y < M;
 };
 
-const dx = [1, -1, 0, 0, 1, 1, -1, -1];
-const dy = [0, 0, 1, -1, 1, -1, -1];
+const dx = [1, -1, 0, 0];
+const dy = [0, 0, 1, -1];
 const maxValue = Math.max(...map.flat());
 let maxSum = Number.MIN_SAFE_INTEGER;
 const visited = map.map((row) => row.map(() => false));
