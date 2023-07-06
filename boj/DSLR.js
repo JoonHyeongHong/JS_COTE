@@ -24,13 +24,14 @@ const commands = {
 
 const bfs = (register) => {
   const [A, B] = register.split(" ").map(Number);
-
   if (A === B) return "";
+
   const visited = new Array(10000).fill(0);
   const queue = [[A, ""]];
   visited[A] = 1;
+
   let index = 0;
-  while (queue.length) {
+  while (index < queue.length) {
     const [number, enteredCommand] = queue[index++];
 
     for (const command in commands) {
