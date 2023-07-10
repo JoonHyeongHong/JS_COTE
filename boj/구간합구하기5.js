@@ -8,18 +8,21 @@ const [N, M] = input[0].split(" ").map(Number);
 const array = input.slice(1, N + 1).map((row) => row.split(" ").map(Number));
 const commands = input.slice(N + 1).map((row) => row.split(" ").map(Number));
 
-const newArray = [];
-let sum = 0;
-for (let x = 0; x < array.length; x++) {
-  newArray.push([]);
-  for (let y = 0; y < array[0].length; y++) {
-    sum += array[x][y];
-    newArray[x][y] = sum;
+const dp = Array.from({ length: N + 1 }, () => new Array(N + 1).fill(0));
+
+for (let x = 1; x < N + 1; x++) {
+  for (let y = 1; y < N + 1; y++) {
+    dp[x][y] =
+      array[x - 1][y - 1] + dp[x][y - 1] + dp[x - 1][y] - dp[x - 1][y - 1];
   }
 }
 
+let answer = "";
+
 commands.forEach((command) => {
-  const [x1, y1, x2, y2] = command.map((el) => el - 1);
-  // x2,y2까지의 합
-  console.log(newArray[x2][y2] - newArray[x1][y1]);
+  const [x1, y1, x2, y2] = command;
+  answer +=
+    dp[x2][y2] - (dp[x1 - 1][y2] + dp[x2][y1 - 1]) + dp[x1 - 1][y1 - 1] + "\n";
 });
+
+console.log(answer);
