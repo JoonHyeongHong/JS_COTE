@@ -5,14 +5,14 @@ const input = require("fs")
 
 const [A, B, C] = input.split(" ").map(BigInt);
 
-const pow = (a, b) => {
-  if (b == 0) return BigInt(1);
-  const temp = pow(b, BigInt(parseInt(b / BigInt(2))));
-  if (b % BigInt(2) == 0) {
+const solution = (power) => {
+  if (power === 1n) return A % C;
+  const temp = solution(B, BigInt(parseInt(B / BigInt(2))));
+  if (B % BigInt(2) == 0) {
     return (temp * temp) % C;
   } else {
-    return (temp * temp * a) % C;
+    return (temp * temp * A) % C;
   }
 };
 
-console.log(parseInt(pow(A, B)));
+console.log(parseInt(solution(A, B)));
