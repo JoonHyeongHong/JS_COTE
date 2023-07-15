@@ -41,46 +41,30 @@ const findFeed = (x, y, level) => {
     }
   }
   feed.sort((a, b) => a[2] - b[2]);
-  return feed.length ? [feed[0][0], feed[0][1]] : undefined;
+  return feed[0] ?? undefined;
 };
 
 const bfs = (X, Y) => {
   let time = 0;
+  let level = 2;
   let feedCount = 0;
-  const feed = findFeed(X, Y, 2);
-  if (!feed) return 0;
-  const nextFeed = [[X, Y, ...feed, 2]];
+  const feed = findFeed(X, Y, level);
+  feed;
+  if (!feed) return time;
+
+  const nextFeed = [[...feed]];
   while (nextFeed.length) {
-    const [startX, startY, endX, endY, curLevel] = nextFeed.shift();
-    const queue = [[startX, startY, curLevel, 0]];
-    const visited = map.map((row) => row.map(() => 0));
-    while (queue.length) {
-      const [x, y, level, count] = queue.shift();
-      visited[x][y] = 1;
-      for (let i = 0; i < 4; i++) {
-        const nx = x + dx[i];
-        const ny = y + dy[i];
-        if (isInMap(nx, ny) && map[nx][ny] <= level && !visited[nx][ny]) {
-          visited[nx][ny] = 1;
-          if (nx === endX && ny === endY) {
-            map[nx][ny] = 0;
-            let newLevel = level;
-            feedCount++;
-            if (feedCount === newLevel) {
-              feedCount = 0;
-              newLevel++;
-            }
-            time += count + 1;
-            const feed = findFeed(nx, ny, newLevel);
-            if (!feed) return time;
-            nextFeed.push([nx, ny, ...feed, newLevel]);
-            break;
-          } else {
-            queue.push([nx, ny, level, count + 1]);
-          }
-        }
-      }
+    const [endX, endY, distance] = nextFeed.shift();
+    feedCount++;
+    map[endX][endY] = 0;
+    time += distance;
+    if (feedCount === level) {
+      feedCount = 0;
+      level++;
     }
+    const next = findFeed(endX, endY, level);
+    if (!next) return time;
+    nextFeed.push(next);
   }
   return time;
 };
