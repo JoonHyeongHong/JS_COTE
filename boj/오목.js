@@ -8,8 +8,7 @@
 입력으로 바둑판의 어떤 상태가 주어졌을 때, 검은색이 이겼는지, 흰색이 이겼는지 또는 아직 승부가 결정되지 않았는지를 판단하는 프로그램을 작성하시오. 단, 검은색과 흰색이 동시에 이기거나 검은색 또는 흰색이 두 군데 이상에서 동시에 이기는 경우는 입력으로 들어오지 않는다.
 */
 
-const fs = require("fs");
-const input = fs
+const fs = require("fs")
   .readFileSync("/home/sesa/JS_Cote/boj/example.txt")
   .toString()
   .trim()
