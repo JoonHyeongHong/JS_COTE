@@ -30,8 +30,9 @@ const getFeed = (startX, startY, endX, endY, level) => {
   }
   return 0;
 };
+
 const findFeed = (x, y, level) => {
-  let feed = [];
+  const feed = [];
   for (let nx = 0; nx < N; nx++) {
     for (let ny = 0; ny < N; ny++) {
       if (isAbleToEat(nx, ny, level)) {
@@ -47,9 +48,10 @@ const findFeed = (x, y, level) => {
 const bfs = (X, Y) => {
   let time = 0;
   let level = 2;
+
   let feedCount = 0;
+
   const feed = findFeed(X, Y, level);
-  feed;
   if (!feed) return time;
 
   const nextFeed = [[...feed]];
@@ -74,7 +76,7 @@ for (let x = 0; x < N; x++) {
   for (let y = 0; y < N; y++) {
     if (map[x][y] === 9) {
       map[x][y] = 0;
-      answer += bfs(x, y);
+      answer = bfs(x, y);
     }
   }
 }

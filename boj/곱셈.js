@@ -6,13 +6,17 @@ const input = require("fs")
 const [A, B, C] = input.split(" ").map(BigInt);
 
 const solution = (power) => {
-  if (power === 1n) return A % C;
-  const temp = solution(B, BigInt(parseInt(B / BigInt(2))));
-  if (B % BigInt(2) == 0) {
-    return (temp * temp) % C;
-  } else {
-    return (temp * temp * A) % C;
+  if (power === 1n) {
+    return A % C;
   }
+
+  const half = solution(power / 2n) % C;
+
+  if (power % 2n) {
+    return (half * half * (A % C)) % C;
+  }
+
+  return (half * half) % C;
 };
 
-console.log(parseInt(solution(A, B)));
+console.log(solution(B).toString());
