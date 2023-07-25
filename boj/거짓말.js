@@ -4,27 +4,36 @@
     .toString()
     .trim()
     .split("\n");
+
+  //값 입력
   const [NM, Truth, ...parties] = input;
   const [N, M] = NM.split(" ").map(Number);
+  const [_, ...peopleKnowingTruth] = Truth.split(" ").map(Number);
+
   if (M === 0) return console.log(0);
+  if (peopleKnowingTruth === 0) return console.log(M);
 
-  const [_, ...KnowingTruthNumber] = Truth.split(" ").map(Number);
+  const visitingLists = parties.map((party) => {
+    const [_, ...visitingNumbers] = party.split(" ").map(Number);
+    return visitingNumbers;
+  });
 
-  if (KnowingTruthNumber === 0) return console.log(M);
-
+  // count 변수
   let ableToLie = 0;
 
+  //방문 배열
   const visited = new Array(N + 1).fill(false);
-  KnowingTruthNumber.forEach((number) => {
+  peopleKnowingTruth.forEach((number) => {
     visited[number] = true;
   });
 
+  //그래프용 간선 배열
   const edges = [];
-  parties.forEach((party) => {
-    const [visitedCount, ...visitingNumbers] = party.split(" ").map(Number);
-    if (visitedCount > 1) edges.push(visitingNumbers);
+  visitingLists.forEach((visitors) => {
+    edges.push(visitors);
   });
 
+  // 그래프
   const graph = Array.from({ length: N + 1 }, () => []);
   edges.forEach((edge) => {
     edge.forEach((number, idx) => {
@@ -42,11 +51,14 @@
     }
   };
 
-  parties.forEach((party) => {
-    const [_, ...visitingNumbers] = party.split(" ").map(Number);
+  visitingLists;
+
+  visitingLists.forEach((visitors) => {
     const stack = [];
-    if (visitingNumbers.some((number) => visited[number])) {
-      stack.push(...visitingNumbers);
+
+    //한 명이라도 진실을 알고 있다면, 해당 파티에 방문인원들은
+    if (visitors.some((number) => visited[number])) {
+      stack.push(...visitors);
     }
     while (stack.length) {
       const node = stack.pop();
@@ -54,12 +66,11 @@
     }
   });
 
-  parties.forEach((party) => {
-    const [_, ...visitingNumbers] = party.split(" ").map(Number);
-    if (!visitingNumbers.some((number) => visited[number])) {
+  visitingLists.forEach((visitors) => {
+    if (!visitors.some((number) => visited[number])) {
       ableToLie++;
     }
   });
 
-  console.log(Math.min(ableToLie, M));
+  return console.log(Math.min(ableToLie, M));
 })();
