@@ -1,6 +1,6 @@
-(()=>{
-  class PriorityQueue{
-    constructor(){
+(() => {
+  class PriorityQueue {
+    constructor() {
       this.heap = [];
     }
 
@@ -8,42 +8,54 @@
       return this.heap.length === 0;
     }
 
-    peek(){
+    peek() {
       return this.heap[0];
     }
 
-    push(data){
+    push(data) {
       this.heap.push(data);
       let index = this.heap.length - 1;
-      while(index > 0){
+      while (index > 0) {
         const parentIndex = Math.floor((index - 1) / 2);
-        if(this.heap[parentIndex] <= this.heap[index]) break;
-        [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex],this.heap[index]];
+        if (this.heap[parentIndex] <= this.heap[index]) break;
+        [this.heap[index], this.heap[parentIndex]] = [
+          this.heap[parentIndex],
+          this.heap[index],
+        ];
         index = parentIndex;
       }
     }
 
-    pop(){
-      if(this.empty()) return;
+    pop() {
+      if (this.empty()) return;
       const value = this.peek();
-      [this.heap[0], this.heap[this.heap.length - 1]] = [this.heap[this.heap.length-1],this.heap[0]];
+      [this.heap[0], this.heap[this.heap.length - 1]] = [
+        this.heap[this.heap.length - 1],
+        this.heap[0],
+      ];
       this.heap.pop();
       this._heapify();
       return value;
     }
 
-    _heapify(){
+    _heapify() {
       const x = this.peek();
       const n = this.heap.length;
       let cur = 0;
 
-      while(2 * cur + 1 < n){
+      while (2 * cur + 1 < n) {
         const leftChild = 2 * cur + 1;
         const rightChild = leftChild + 1;
-        const smallerChild = rightChild < n && this.heap[rightChild] < this.heap[leftChild] ? rightChild : leftChild;
+        const smallerChild =
+          rightChild < n && this.heap[rightChild] < this.heap[leftChild]
+            ? rightChild
+            : leftChild;
 
-        if(x > this.heap[smallerChild]){
-          [this.heap[cur], this.heap[smallerChild]] = [this.heap[smallerChild], this.heap[cur]];
+        if (x > this.heap[smallerChild]) {
+          [this.heap[cur], this.heap[smallerChild]] = [
+            this.heap[smallerChild],
+            this.heap[cur],
+          ];
           cur = smallerChild;
         } else {
           break;
@@ -51,55 +63,58 @@
       }
     }
   }
-  const input = require('fs').readFileSync('/home/sesa/JS_Cote/boj/example.txt').toString().trim().split('\n');
-  const [first,second,...rest] = input;
+  const input = require("fs")
+    .readFileSync("/home/sesa/JS_Cote/boj/example.txt")
+    .toString()
+    .trim()
+    .split("\n");
+  const [first, second, ...rest] = input;
 
   //정점의 개수 V, 간선의 개수 E
-  const [V,E] = first.split(' ').map(Number);
+  const [V, E] = first.split(" ").map(Number);
   const startVertex = Number(second);
-  const edges = rest.map((str)=> str.split(' ').map(Number));
-  const distances = new Array(V+1).fill(Infinity);
+  const edges = rest.map((str) => str.split(" ").map(Number));
+  const distances = new Array(V + 1).fill(Infinity);
 
-
-  const graph = Array.from({length : V+1},()=> []);
+  const graph = Array.from({ length: V + 1 }, () => []);
   //  간선의 출발점 u , 간선의 도착점 : v , 가중치 : weight
-  for(const uvw of edges){
-    const [u,v,w] = uvw;
-    graph[u].push([v,w]);
+  // 양방향이 아닌 단방향
+  for (const uvw of edges) {
+    const [u, v, w] = uvw;
+    graph[u].push([v, w]);
   }
 
   const dijkstra = (start) => {
     const pq = new PriorityQueue();
-    pq.push([0,start]);
+    pq.push([0, start]);
     distances[start] = 0;
 
-    while(!pq.empty()){
+    while (!pq.empty()) {
       const [dist, cur] = pq.pop();
-      
-      //최단거리가 아닌 경우 continue;
-      if(distances[cur] < dist) continue;
-      for(const vw of graph[cur]){
-        const [v,w] = vw;
-        const node = v;
-        const cost = dist + w;
-        if(cost < distances[node]){
-          pq.push([cost,node]);
+      //기본적으로 현재 최단거리보다도 더 긴 경우 의미 없으므로 continue;
+      if (distances[cur] < dist) continue;
+
+      //그래프에서 하나씩 꺼낸다
+      for (const vw of graph[cur]) {
+        const [node, weight] = vw;
+        const cost = dist + weight;
+        if (cost < distances[node]) {
+          pq.push([cost, node]);
           distances[node] = cost;
         }
       }
     }
-  }
-  const printAll = () => {
+  };
+
+  const printAll = (end) => {
     let answer = "";
-    for(let i = 1 ; i <= V ; i++){
-      if(distances[i] === Infinity){
-        answer += "INF" + "\n";
-      } else {
-        answer += distances[i] + "\n";
-      }
+    answer += distances[end] + "\n";
+    answer += cities[end].length + "\n";
+    for (const city of cities[end]) {
+      answer += city + " ";
     }
     console.log(answer);
-  }
+  };
 
   dijkstra(startVertex);
   printAll();
